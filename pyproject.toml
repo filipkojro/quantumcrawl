@@ -1,0 +1,18 @@
+[project]
+name = "quantumcrawl"
+version = "0.1.0"
+dependencies = [
+  "numpy~=2.3.1",
+  "scipy~=1.15",
+  "POT~=0.9.4",
+  "matplotlib~=3.10.0",
+  "tqdm~=4.67.1"
+  "json~=2.0.9"
+]
+authors = [
+  {name = "Filip Kojro"}
+]
+maintainers = [
+  {name = "Filip Kojro"}
+]
+license = {file = "LICENSE"}
