@@ -1,7 +1,7 @@
 # quantumcrawl
 Python libraty meant to simplify simulations of 2d quantum walks on discrete grid and search of a most symmetric distibution of given parameters.
 
-## installation
+## Installation (using pip)
 ```bash
 pip install git+https://github.com/filipkojro/quantumcrawl.git
 ```
@@ -14,7 +14,7 @@ Versions of libraries in dependencies was copied from my current workstation. Ot
 import quantumcrawl.walk
 import quantumcrawl.coin_operators
 
-walkFnormal = quantumcrawl.walk.Walk(coin4all=quantumcrawl.coin_operators.H2gate, diag=True)
+walkFnormal = quantumcrawl.walk.Walk(coin4all=quantumcrawl.coin_operators.coinH, diag=True)
 walkFnormal.optimize()
 walkFnormal.preety_print_optimize_results()
 ```
@@ -25,7 +25,7 @@ import quantumcrawl.coin_operators
 import quantumcrawl.walk
 import matplotlib.pyplot as plt
 
-walk = quantumcrawl.walk.Walk(coin4all=quantumcrawl.coin_operators.F, starting_state=[ 0, 0, 0, 0, 0, 0, 1, 0], num_steps=100)
+walk = quantumcrawl.walk.Walk(coin4all=quantumcrawl.coin_operators.coinF, starting_state=[ 0, 0, 0, 0, 0, 0, 1, 0], num_steps=100)
 walk.walk()
 
 plt.imshow(walk.history[-1], cmap='turbo', )

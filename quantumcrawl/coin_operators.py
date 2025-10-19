@@ -22,15 +22,8 @@ G = np.array([[-1,1,1,1],
               [1,1,-1,1],
               [1,1,1,-1]]) / 2
 
+
+# proper coin opaerators names
 coinH = H2gate
 coinF = F
 coinG = G
-
-
-N = 4                     # lub N = 2**d
-n = np.arange(N)
-k = n.reshape((N, 1))
-
-# tak, jak na obrazku: plus w wykładniku i normalizacja 1/sqrt(N)
-omega = np.exp(2j * np.pi / N)
-Fminus = (1 / np.sqrt(N)) * (omega ** (k * n))

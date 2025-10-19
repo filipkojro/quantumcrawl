@@ -36,6 +36,13 @@ def every_symmetry_symmetry(A):
     return result / 2 / comps
 
 def TVD2d(A):
+    '''
+    Calculates sum of differences between axial symmetric versions of 2D distribution A using sum of absolute difference of every value.
+    Args:
+        A: np array representing the 2D distribution
+    Returns:
+        float representing the difference between A and its axial symmetric versions
+    '''
     Ay_flip = np.flip(A, 0)
     Ax_flip = np.flip(A, 1)
 
@@ -48,10 +55,24 @@ def TVD2d(A):
     return x_diff_sum + y_diff_sum
 
 def point_symmetry(A):
+    '''
+    Calculates sum of differences between point symmetric version of 2D distribution A using sum of absolute difference of every value.
+    Args:
+        A: np array representing the 2D distribution
+    Returns:
+        float representing the difference between A and its point symmetric version
+    '''
     rotated_A = np.rot90(A,2)
     return np.sum(np.abs(A - rotated_A))
 
 def rot_symmetry(A):
+    '''
+    Calculates sum of differences between all rotated versions of 2D distribution A using sum of absolute difference of every value.
+    Args:
+        A: np array representing the 2D distribution
+    Returns:
+        float representing the difference between all rotated versions of A
+    '''
     rot_A = A.copy()
     result = 0
     for _ in range(3):
