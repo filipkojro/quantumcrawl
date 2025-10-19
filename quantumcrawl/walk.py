@@ -11,6 +11,14 @@ from . import metrics
 from . import helpers
 
 def singleC2d(states, coins):
+    '''
+    Applies coin operator to each position in the 2D grid.
+    Args:
+        states: 3D numpy array of shape (X, Y, 4) representing the quantum states at each position.
+        coins: 4D numpy array of shape (X, Y, 4, 4) representing the coin operators at each position.
+    Returns:
+        a 3D numpy array of the same shape as states after applying the coin operators.
+    '''
     next_states = np.zeros_like(states)
 
     next_states = np.einsum('xyqp,xyp->xyq', coins, states)
@@ -28,6 +36,13 @@ def singleC2d(states, coins):
 #     return next_states
 
 def singleS2d(states):
+    '''
+    Applies shift operator to the 2D grid.
+    Args:
+        states: 3D numpy array of shape (X, Y, 4) representing the quantum states at each position.
+    Returns:
+        a 3D numpy array of the same shape as states after applying the shift operator.
+    '''
     next_states = np.zeros_like(states)
 
     # (y→y–1)
@@ -45,6 +60,13 @@ def singleS2d(states):
     return next_states
 
 def singleS2ddiag(states):
+    '''
+    Applies shift operator to the 2D grid. **Same as singleS2d but for diagonal movement.**
+    Args:
+        states: 3D numpy array of shape (X, Y, 4) representing the quantum states at each position.
+    Returns:
+        a 3D numpy array of the same shape as states after applying the shift operator.
+    '''
     next_states = np.zeros_like(states)
 
     # left down
@@ -78,6 +100,18 @@ def singleS2ddiag(states):
 #     return next_states
 
 class Walk:
+    '''
+    Class representing a 2D quantum walk with coin operators and optimization capabilities.
+    Args:
+        num_steps: Number of steps in the quantum walk.
+        coin4all: Coin operator to be used at all positions.
+        starting_state: Initial state of the quantum walker in position (num_steps / 2, num_steps / 2).
+        state_translator: Function to translate real-valued parameters into complex starting states.
+        metric_fun: Function to evaluate the performance of the walk based on the final probability distribution.
+        bounds: Bounds for the optimization of the starting state parameters.
+        verbose: If True, prints additional information during optimization.
+        diag: If True, uses diagonal shift operator instead of standard shift operator.
+    '''
     def __init__(self,
                  num_steps = 50,
                  coin4all = coin_operators.coinH,
@@ -87,6 +121,7 @@ class Walk:
                  bounds = None,
                  verbose = False,
                  diag = False):
+        
         self.num_steps = num_steps
         self.coin4all = coin4all
         if starting_state == None:
@@ -117,6 +152,9 @@ class Walk:
         self.generate_coin_ops()
 
     def generate_coin_ops(self):
+        '''
+        Generates the coin operators for each position in the 2D grid based on the provided coin4all operator.
+        '''
         self.coins_op = np.zeros((self.num_steps * 2 + 1, self.num_steps * 2 + 1, 4,4), dtype=complex)
 
         for i in range(self.num_steps * 2 + 1):
@@ -124,6 +162,9 @@ class Walk:
                 self.coins_op[i,j] = self.coin4all
 
     def walk(self):
+        '''
+        Performs the 2d quantum walk using initialized starting state and coin operator and stores probability history. In loop applies coin and shift operaators.
+        '''
         states = np.zeros((self.num_steps * 2 + 1, self.num_steps * 2 + 1, 4), dtype=complex)
         
         states[self.num_steps, self.num_steps] = self.starting_state
@@ -140,6 +181,9 @@ class Walk:
             self.history[i] = np.sum(np.abs(states)**2,axis=2)
 
     def revwalk(self):
+        '''
+        Performs the 2d quantum walk using initialized starting state and coin operator and stores probability history. In loop applies shift and coin operaators.
+        '''
         states = np.zeros((self.num_steps * 2 + 1, self.num_steps * 2 + 1, 4), dtype=complex)
         
         states[self.num_steps, self.num_steps] = self.starting_state
@@ -157,6 +201,13 @@ class Walk:
 
         
     def walk_fun(self, starting_state):
+        '''
+        Fuctions to be minimized during optimization. Performs the quantum walk for a given starting state and evaluates the metric.
+        Args:
+            starting_state: Real-valued parameters representing the starting state.
+        Returns:
+            float representing the metric value to be minimized.
+        '''
         states = np.zeros((self.num_steps * 2 + 1, self.num_steps * 2 + 1, 4), dtype=complex)
 
         starting_state_prepared = self.state_translator(starting_state)
@@ -183,6 +234,11 @@ class Walk:
         return metric
 
     def optimize(self, initial_guess = None):
+        '''
+        Optimizes the starting state parameters to minimize the metric function using scipy's minimize function.
+        Args:
+            initial_guess: Optional initial guess for the starting state parameters. If None, a random guess is used.
+        '''
         self.state_history = []
         self.m_history = []
         if initial_guess == None:
@@ -190,7 +246,10 @@ class Walk:
 
         self.opt_res = scipy.optimize.minimize(fun=self.walk_fun, x0=initial_guess,bounds=self.bounds)
 
-    def preety_print_optimize_results(self, diag = False):
+    def preety_print_optimize_results(self):
+        '''
+        Prints the results of the optimization in nice format.
+        '''
 
         print('=' * 111)
 
@@ -232,6 +291,11 @@ class Walk:
         plt.show()
     
     def save_history_to_file(self, filename):
+        '''
+        Saves optimization history and results to a JSON file.
+        Args:
+            filename: Name of the file to save the results.
+        '''
         try:
             with open(filename, "w") as fp:
                 prepared_dict = {

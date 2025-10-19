@@ -2,6 +2,13 @@ import numpy as np
 import ot
 
 def all_rots(A):
+    '''
+    Generates all 4 rotations of a matrix and returns them as a list.
+    Args:
+        A: np array representing the 2D distribution
+    Returns:
+        list of np arrays representing all 4 rotations of A
+    '''
     rots = [A]
 
     for i in range(3):
@@ -9,6 +16,13 @@ def all_rots(A):
     return rots
 
 def every_symmetry_symmetry(A):
+    '''
+    Calculates normalized sum of differences between all symmetric versions of 2D distribution A using sum of absolute difference of every value.
+    Args:
+        A: np array representing the 2D distribution
+    Returns:
+        float representing the difference between all symmetric versions of A
+    '''
     rots = all_rots(A) + all_rots(np.flip(A, 0)) + all_rots(np.flip(A, 1))
 
     result = 0
@@ -47,6 +61,14 @@ def rot_symmetry(A):
     return result
 
 def wasserstein_distance(A, B):
+    '''
+    Calculates the Wasserstein distance between two 2D distributions A and B using cityblock metric.
+    Args:
+        A: np array representing the first 2D distribution
+        B: np array representing the second 2D distribution
+    Returns:
+        float representing the Wasserstein distance between A and B
+    '''
     AF = A.flatten()
     BF = B.flatten()
 
@@ -59,6 +81,13 @@ def wasserstein_distance(A, B):
     return distance
 
 def every_symmetry_symmetry_wasserstein(A):
+    '''
+    Calculates normalized sum of differences between all symmetric versions of 2D distribution A using Wasserstein distance.
+    Args:
+        A: np array representing the 2D distribution
+    Returns:
+        float representing the difference between all symmetric versions of A
+    '''
     rots = all_rots(A) + all_rots(np.flip(A, 0)) + all_rots(np.flip(A, 1))
 
     result = 0
