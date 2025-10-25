@@ -168,7 +168,7 @@ class Walk:
         
         self.history = np.zeros((self.num_steps, self.num_steps * 2 + 1, self.num_steps * 2 + 1))
 
-        for i in tqdm(range(self.num_steps)):
+        for i in tqdm(range(self.num_steps)) if self.verbose else range(self.num_steps):
             states = singleC2d(states, self.coins_op)
             if self.diag:
                 states = singleS2ddiag(states)
@@ -187,7 +187,7 @@ class Walk:
         
         self.history = np.zeros((self.num_steps, self.num_steps * 2 + 1, self.num_steps * 2 + 1))
 
-        for i in tqdm(range(self.num_steps)):
+        for i in tqdm(range(self.num_steps)) if self.verbose else range(self.num_steps):
             if self.diag:
                 states = singleS2ddiag(states)
             else:
