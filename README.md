@@ -2,10 +2,20 @@
 Python libraty meant to simplify simulations of 2d quantum walks on discrete grid and search of a most symmetric distibution of given parameters.
 
 ## Installation (using pip)
+
+### main branch
+
 ```bash
 pip install git+https://github.com/filipkojro/quantumcrawl.git
 ```
 Versions of libraries in dependencies was copied from my current workstation. Other versions may or may not work.
+
+### testing branch
+
+If you want most up to date version but **not yet tested** you can install from testing branch.
+```bash
+pip install git+https://github.com/filipkojro/quantumcrawl.git@testing
+```
 
 ## Example usage
 

@@ -115,7 +115,7 @@ class Walk:
     def __init__(self,
                  num_steps = 50,
                  coin4all = coin_operators.coinH,
-                 starting_state = None,
+                 starting_state = np.random.rand(8),
                  state_translator = state_translators.normal,
                  metric_fun = metrics.every_symmetry_symmetry,
                  bounds = None,
@@ -124,10 +124,7 @@ class Walk:
         
         self.num_steps = num_steps
         self.coin4all = coin4all
-        if starting_state == None:
-            self.starting_state = state_translator(np.random.rand(8))
-        else:
-            self.starting_state = state_translator(starting_state)
+        self.starting_state = state_translator(starting_state)
         self.state_translator = state_translator
         self.metric_fun = metric_fun
         self.verbose = verbose
@@ -171,7 +168,7 @@ class Walk:
         
         self.history = np.zeros((self.num_steps, self.num_steps * 2 + 1, self.num_steps * 2 + 1))
 
-        for i in tqdm(range(self.num_steps)):
+        for i in tqdm(range(self.num_steps)) if self.verbose else range(self.num_steps):
             states = singleC2d(states, self.coins_op)
             if self.diag:
                 states = singleS2ddiag(states)
@@ -190,7 +187,7 @@ class Walk:
         
         self.history = np.zeros((self.num_steps, self.num_steps * 2 + 1, self.num_steps * 2 + 1))
 
-        for i in tqdm(range(self.num_steps)):
+        for i in tqdm(range(self.num_steps)) if self.verbose else range(self.num_steps):
             if self.diag:
                 states = singleS2ddiag(states)
             else:
