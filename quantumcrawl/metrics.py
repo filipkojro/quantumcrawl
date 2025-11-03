@@ -23,7 +23,7 @@ def every_symmetry_symmetry(A):
     Returns:
         float representing the difference between all symmetric versions of A
     '''
-    rots = all_rots(A) + all_rots(np.flip(A, 0)) + all_rots(np.flip(A, 1))
+    rots = all_rots(A) + all_rots(np.flip(A, 0)) # + all_rots(np.flip(A, 1))
 
     result = 0
     comps = 0
@@ -33,7 +33,7 @@ def every_symmetry_symmetry(A):
             if i != j:
                 result += np.sum(np.abs(rots[i] - rots[j]))
                 comps += 1
-    return result / 2 / comps
+    return result / comps
 
 def TVD2d(A):
     '''
@@ -109,7 +109,7 @@ def every_symmetry_symmetry_wasserstein(A):
     Returns:
         float representing the difference between all symmetric versions of A
     '''
-    rots = all_rots(A) + all_rots(np.flip(A, 0)) + all_rots(np.flip(A, 1))
+    rots = all_rots(A) + all_rots(np.flip(A, 0)) # + all_rots(np.flip(A, 1))
 
     result = 0
     comps = 0
@@ -120,4 +120,4 @@ def every_symmetry_symmetry_wasserstein(A):
                 result += wasserstein_distance(rots[i], rots[j])
                 # result += np.sum(np.abs(rots[i] - rots[j]))
                 comps += 1
-    return result / 2 / comps
+    return result / comps
